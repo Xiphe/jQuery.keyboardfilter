@@ -1,5 +1,5 @@
 /**
- * Keyboard Filter v0.1.0
+ * Keyboard Filter v0.1.1
  * A jQuery plugin for filtering keypresses on elements
  * 
  * Boilerplate by http://jqueryboilerplate.com/
@@ -7,6 +7,7 @@
  * Author: Hannes Diercks, Hamburg 2012
  */
 ;(function ( $ ) {
+	"use strict";
 	var pluginName = 'keybordfilter',
 			document = window.document,
 			defaults = {
@@ -27,7 +28,7 @@
 					upperLetters: ['+65','+66','+67','+68','+69','+70','+71','+72','+73','+74','+75','+76','+77','+78','+79','+80','+81','+82','+83','+84','+85','+86','+87','+88','+89','+90'],
 					space: [32],
 					backspace: [8],
-					delete: [46],
+					'delete': [46],
 					enter: [13],
 					ccp: ['^88', '^67', '^86'], // CUT COPY PASE
 					selectAll: ['^65'],
@@ -64,15 +65,14 @@
 			var check = false;
 
 			$.each( tocheck, function(k,v) {
-				if( v == 'all' ) {
+				if( v === 'all' ) {
 					// console.log('All');
 					check = true;
 					return false;
 				} 
-				else if(typeof v == 'number' && e.keyCode == v) {
+				else if(typeof v === 'number' && e.keyCode === v) {
 					// console.log('number');
-					if( thiz.options.strictModifiers 
-					 && !e.ctrlKey && !e.shiftKey && !e.shiftKey
+					if( thiz.options.strictModifiers && !e.ctrlKey && !e.shiftKey && !e.shiftKey
 					) {
 						check = true;
 						return false;
@@ -82,21 +82,17 @@
 					}
 					
 				} 
-				else if( typeof v == 'string' && typeof thiz.options.groups[v] != 'undefined' ) {
+				else if( typeof v === 'string' && typeof thiz.options.groups[v] !== 'undefined' ) {
 					// console.log('group');
 					check = _checkInternal( e, thiz.options.groups[v] );
-					if( check == true ) {
+					if( check === true ) {
 						return false;
 					}
-				} else if( typeof v == 'string' ) { var 
-					v = new String(v),
-					mod = v.replace(/[0-9]+/g,''),
-					v = v.replace(/[^0-9]+/g,'');
-					// console.log('mod');
-					if( ( mod.indexOf('^') > -1 && e.ctrlKey && e.keyCode == v )
-					 || ( mod.indexOf('+') > -1 && e.shiftKey && e.keyCode == v )
-					 || ( mod.indexOf('!') > -1 && e.altKey && e.keyCode == v )
-					) {
+				} else if( typeof v === 'string' ) { 
+					v = String(v);
+					var mod = v.replace(/[0-9]+/g,'');
+					v = Number(v.replace(/[^0-9]+/g,''));
+					if(( mod.indexOf('^') > -1 && e.ctrlKey && e.keyCode === v ) || ( mod.indexOf('+') > -1 && e.shiftKey && e.keyCode === v ) || ( mod.indexOf('!') > -1 && e.altKey && e.keyCode === v )) {
 						check = true;
 						return false;
 					}
@@ -108,9 +104,7 @@
 		_check = function( e ) {
 			// console.log(_checkInternal( e, thiz.options.disable ));
 			// console.log(_checkInternal( e, thiz.options.enable ));
-			if( ( _checkInternal( e, thiz.options.disable ) && !_checkInternal( e, thiz.options.enable ) )
-			 // || 
-			){
+			if( ( _checkInternal( e, thiz.options.disable ) && !_checkInternal( e, thiz.options.enable ) ) ){
 				return false;
 			}
 			return true;
@@ -120,7 +114,7 @@
 			// console.log(e.keyCode);
 			if( thiz.options.keydown ) {
 				if( _check( e ) ) {
-					if( typeof thiz.options.keydown == 'function' ) {
+					if( typeof thiz.options.keydown === 'function' ) {
 						thiz.options.keydown.call(thiz.element, e);
 					}
 					return true;
@@ -130,7 +124,7 @@
 		}).keyup( function( e ) {
 			if( thiz.options.keyup ) {
 				if( _check( e ) ) {
-					if( typeof thiz.options.keyup == 'function' ) {
+					if( typeof thiz.options.keyup === 'function' ) {
 						thiz.options.keyup.call(thiz.element, e);
 					}
 					return true;
@@ -140,7 +134,7 @@
 		}).keypress( function( e ) {
 			if( thiz.options.keypress ) {
 				if( _check( e ) ) {
-					if( typeof thiz.options.keypress == 'function' ) {
+					if( typeof thiz.options.keypress === 'function' ) {
 						thiz.options.keypress.call(thiz.element, e);
 					}
 					return true;
@@ -157,6 +151,6 @@
 				$.data(this, 'plugin_' + pluginName, new Plugin( this, options ));
 			}
 		});
-	}
+	};
 
 }(jQuery));

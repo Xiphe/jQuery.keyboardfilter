@@ -2,7 +2,7 @@ jQuery - KeyboardFilter
 =======================
 
 Author: Hannes Diercks  
-Version: 0.1.0  
+Version: 0.1.1  
 Date: 2012-05-24 11:42:00  
 
 
@@ -36,3 +36,7 @@ Changelog
 
 ### 0.1.0:  
 - init
+
+### 0.1.1:  
+- checked via http://www.jshint.com/
+- added minifyed version
